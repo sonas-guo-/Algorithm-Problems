@@ -1,0 +1,58 @@
+# 题目链接
+缺失的拼图[http://hihocoder.com/problemset/problem/1552]
+
+# 思路
+观察图发现，对于图上所有方块来说，每个顶点都属于两个或者四个不同的方块（包括大矩形），而缺失的方块的顶点属于一个或者三个，所以用集合记录下每个点出现的次数，到最后一定会剩下4个奇数个的点。
+
+# 代码
+	struct Coord
+	{
+	    int x, y;
+	    Coord(int a, int b) :x(a), y(b) {};
+	    bool operator<(const Coord &a) const
+	    {
+	        if (x == a.x)
+	            return y < a.y;
+	        return x < a.x;
+	    }
+	};
+	set<Coord> S;
+	void op(int x, int y)
+	{
+	    Coord co(x, y);
+	    if (S.find(co) == S.end())
+	        S.insert(co);
+	    else
+	        S.erase(co);
+	}
+	int main()
+	{
+	#ifdef DEBUG
+	    /*ifstream cin("in.txt");
+	    ofstream cout("out.txt");*/
+	    freopen("in.txt", "r", stdin);
+	    freopen("out.txt", "w", stdout);
+	#endif
+	    int N;
+	    string s;
+	    scanf("%d", &N);
+	    int x0, y0, x1, y1;
+	    for (int i = 0; i < N; i++)
+	    {
+	        scanf("%d%d%d%d", &x0, &y0, &x1, &y1);
+	        op(x0, y0);
+	        op(x1, y1);
+	        op(x0, y1);
+	        op(x1, y0);
+	    }
+	    int ansx0=INT_MAX, ansy0=INT_MAX,ansx1=0,ansy1=0;
+	    for (auto i = S.begin(); i != S.end(); i++)
+	    {
+	        ansx0 = min(ansx0, (*i).x);
+	        ansy0 = min(ansy0, (*i).y);
+	        ansx1 = max(ansx1, (*i).x);
+	        ansy1 = max(ansy1, (*i).y);
+	    }
+	    printf("%d %d %d %d\n", ansx0, ansy0, ansx1, ansy1);    
+	    return 0;
+	}
