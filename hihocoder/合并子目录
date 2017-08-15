@@ -1,0 +1,32 @@
+# 题目链接
+合并子目录[http://hihocoder.com/problemset/problem/1551]
+
+# 思路
+由于数据量太大，所以对字符创进行加权，每遇到一个'/'符号，就对之前的字符串进行加权包括之前的'/'符号，因为可能出现"/a/b/c"与"/ba/c"的情况，所以简单的加权即可。
+
+# 代码
+	int main()
+	{
+	#ifdef DEBUG
+	    ifstream cin("in.txt");
+	    ofstream cout("out.txt");
+	    /*freopen("in.txt", "r", stdin);
+	    freopen("out.txt", "w", stdout);*/
+	#endif
+	    int N;
+	    string s;
+	    set<int64_t> S;
+	    cin >> N;
+	    for (int i = 1; i <= N; i++)
+	    {
+	        cin >> s;
+	        int64_t hash = 0;
+	        for (size_t j = 1; j < s.size(); j++)
+	        {
+	            if (s[j] == '/') S.insert(hash);
+	            hash = hash * 132 + s[j];
+	        }
+	    }
+	    cout << S.size() << endl;
+	    return 0;
+	}
